@@ -2,120 +2,56 @@
 
 A Tkinter GUI for single-run image embedding and non-blind extraction using the RDJAT average-bin method, aligned with the reference MATLAB workflow (TRA + modulo, reconstructed cover).
 
-## Overview
-
-RDJAT-Embed provides a complete Tkinter-based GUI for embedding and extracting secret data from images. It implements the RDJAT average-bin steganography method with MATLAB-compatible algorithms and includes comprehensive quality metrics.
-
 ## Features
 
-- **Embedding**: Hide secret bits in images using per-5-bin averages (bins 0:5:260) with PSNR/MSE/SSIM
-- **Extraction**: Non-blind extraction using TRA-style modulo method; shows the reconstructed cover
-- **Auto-fills**: Extraction inputs from the last embed run
-- **Three previews**: Original, Stego, and Recovered Cover
-- **Bits comparison**: Embedded vs. recovered (capped preview)
-- **Histograms**: For Original, Stego, and Recovered Cover
-- **Quality Metrics**: PSNR, MSE, and SSIM calculations
+- Embedding with per-5-bin averages (bins 0:5:260), with PSNR/MSE/SSIM
+- Extraction via TRA-style modulo method; shows the reconstructed cover
+- Auto-fills extraction inputs from the last embed run
+- Three previews: Original, Stego, and Recovered Cover
+- Bits panes: embedded vs. recovered (capped preview)
+- Histograms for Original, Stego, and Recovered Cover
 
-- **Visualization**: Side-by-side image previews and histogram analysis## Installation
+## Installation
 
-- **Bits Comparison**: View embedded vs. recovered bits
+**Windows PowerShell:**
 
-- **MATLAB Compatibility**: Algorithms aligned with reference MATLAB implementationWindows PowerShell:
-
-## Installation```
-
+```
 py -3.12 -m venv .venv
-
-### Prerequisites.\.venv\Scripts\Activate.ps1
-
+.\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-
-- Python 3.8 or higherpip install -r rdjat\requirements.txt
-
-- pip package manager```
-
-### Install from Source## Run
-
-````bash- Direct script:
-
-# Clone or download the project
-
-cd rdjat```
-
-py -3.12 .\rdjat\rdjat.py
-
-# Create virtual environment (recommended)```
-
-python -m venv .venv
-
-- As a module (if `__main__.py` is present):
-
-# Activate virtual environment
-
-# Windows:```
-
-.venv\Scripts\activatepy -3.12 -m rdjat
-
-# Linux/Mac:```
-
-source .venv/bin/activate
-
-## Usage Notes
-
-# Install the package
-
-pip install -e .- Images are converted to grayscale (MATLAB-equivalent weights and round-half-up) before processing.
-
-```- Extraction requires the original cover (non-blind). The app reconstructs the cover using the Proposed method.
-
-- The actual embedded length (counter) is used for extraction when available; otherwise limited by GT bits or capacity.
-
-### Install Dependencies Only- For large bitstreams, the UI trims the visible bits to keep the interface responsive.
-
-
-
-```bash## Cite
-
 pip install -r requirements.txt
+```
 
-```If you use this tool in a paper (e.g., Software Impacts), please cite the repository. A `CITATION.cff` will be added at the repo root.
+**Linux/Mac:**
 
+```
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-## Usage
+## Run
 
-### Command Line
+**Direct script:**
 
-After installation, you can run RDJAT from anywhere:
-
-```bash
-rdjat
-````
-
-### As a Python Module
-
-```bash
-# From the project directory
-python -m rdjat
-
-# Or using the src path
+```
 python -m src.rdjat
 ```
 
-### Programmatic Usage
+**As a module (after installation):**
 
-```python
-from rdjat import EmbeddingApp, embed_once, extract_with_TRA
-from rdjat.utils import load_matlab_image, load_bits_dlmread_like
-
-# Launch GUI
-app = EmbeddingApp()
-app.mainloop()
-
-# Or use core functions directly
-cover_img = load_matlab_image("cover.tiff")
-secret_bits = load_bits_dlmread_like("secret.txt")
-result = embed_once(cover_img, secret_bits)
 ```
+pip install -e .
+rdjat-embed
+```
+
+## Usage Notes
+
+- Images are converted to grayscale (MATLAB-equivalent weights and round-half-up) before processing.
+- Extraction requires the original cover (non-blind). The app reconstructs the cover using the Proposed method.
+- The actual embedded length (counter) is used for extraction when available; otherwise limited by GT bits or capacity.
+- For large bitstreams, the UI trims the visible bits to keep the interface responsive.
 
 ## Project Structure
 
@@ -125,10 +61,10 @@ rdjat/
 │   ├── __init__.py         # Package initialization
 │   ├── __main__.py         # Module entry point
 │   ├── core/               # Core algorithms
-│   │   ├── embedding.py    # Embedding functions
-│   │   └── extraction.py   # Extraction functions
+│   │   ├── embedding.py    # RDJAT embedding functions
+│   │   └── extraction.py   # TRA extraction methods
 │   ├── gui/                # User interface
-│   │   └── interface.py    # Main GUI application
+│   │   └── interface.py    # Complete Tkinter GUI
 │   └── utils/              # Utility functions
 │       └── image_processing.py
 ├── assets/                 # Test data and resources
@@ -141,38 +77,6 @@ rdjat/
 ├── setup.py               # Package setup
 └── pyproject.toml         # Modern Python packaging config
 ```
-
-## Development
-
-### Setting up Development Environment
-
-```bash
-# Install development dependencies
-pip install -e .[dev]
-
-# Run tests
-pytest
-
-# Format code
-black src/
-
-# Type checking
-mypy src/
-```
-
-### Key Components
-
-- **Core Module**: Contains the main steganography algorithms
-
-  - `embedding.py`: RDJAT embedding algorithm implementation
-  - `extraction.py`: TRA-based extraction methods
-
-- **GUI Module**: Tkinter-based user interface
-
-  - `interface.py`: Complete GUI application with file dialogs, previews, and metrics
-
-- **Utils Module**: Image processing and utility functions
-  - `image_processing.py`: MATLAB-compatible image operations, PSNR/SSIM calculations
 
 ## Algorithm Details
 
@@ -189,9 +93,27 @@ The RDJAT method uses:
 - **Bits**: Plain text files with '0' and '1' characters
 - **Metrics**: CSV export for PSNR, MSE, SSIM values
 
+## Development
+
+### Setting up Development Environment
+
+```
+# Install development dependencies
+pip install -e .[dev]
+
+# Run tests
+pytest
+
+# Format code
+black src/
+
+# Type checking
+mypy src/
+```
+
 ## Citation
 
-If you use RDJAT in academic work, please cite the repository and reference the original research paper.
+If you use this tool in a paper (e.g., Software Impacts), please cite the repository. A `CITATION.cff` will be added at the repo root.
 
 ## License
 
@@ -204,7 +126,3 @@ MIT License - see LICENSE file for details.
 3. Make your changes with tests
 4. Ensure code passes linting and tests
 5. Submit a pull request
-
-## Support
-
-For issues, questions, or contributions, please use the project's issue tracker.
