@@ -1,0 +1,24 @@
+# Development dependencies for RDJAT
+# Include all runtime dependencies plus development tools
+
+# Runtime dependencies (from requirements.txt)
+numpy>=1.24,<3.0
+Pillow>=10,<12
+scikit-image>=0.22,<0.25
+
+# Development tools
+pytest>=6.0
+pytest-cov
+black>=22.0
+flake8>=4.0
+mypy>=0.991
+
+# Documentation
+sphinx>=4.0
+sphinx-rtd-theme
+
+# Build tools
+setuptools>=45
+wheel
+build
+twine
